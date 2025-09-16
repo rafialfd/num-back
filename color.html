@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Number Back</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="num-display"><h1 id="num"></h1></div>
+      <div class="next-button" id="next-button">
+        <button onclick="next()">next</button>
+      </div>
+      <div class="guess-button" id="guess-button">
+        <button onclick="checkTrue()">true</button
+        ><button onclick="checkFalse()">false</button>
+      </div>
+      <p id="score"></p>
+      <p id="ans-result"></p>
+    </div>
+  </body>
+
+  <style>
+    body {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #num {
+      height: 100px;
+      width: 100px;
+      border-radius: 10px;
+    }
+  </style>
+
+  <script>
+    let colorArray = ["red", "blue", "green", "black"];
+    let numArray = new Array(3);
+    let locationNow = 1;
+    let score = 0;
+
+    for (let i = 0; i < 5; i++) {
+      let mathRandom = Math.floor(Math.random() * 4);
+      numArray[i] = colorArray[mathRandom];
+    }
+
+    document.getElementById("num").style.backgroundColor = numArray[2];
+    document.getElementById("score").innerHTML = "Score:" + score;
+    document.getElementById("guess-button").style.display = "none";
+
+    function next() {
+      updateNumber();
+      document.getElementById("num").style.backgroundColor = numArray[2];
+      locationNow++;
+
+      if (locationNow < 3) {
+        document.getElementById("guess-button").style.display = "none";
+      } else if (locationNow >= 3) {
+        document.getElementById("guess-button").style.display = "block";
+        document.getElementById("next-button").style.display = "none";
+      }
+    }
+
+    function updateNumber() {
+      numArray[0] = numArray[1];
+      numArray[1] = numArray[2];
+      let mathRandom = Math.floor(Math.random() * 4);
+      numArray[2] = colorArray[mathRandom];
+      console.log(numArray);
+    }
+    function checkTrue() {
+      if (numArray[2] == numArray[0]) {
+        score++;
+        document.getElementById("score").innerHTML = "Score:" + score;
+        document.getElementById("ans-result").innerHTML = "true";
+      } else {
+        score = 0;
+        document.getElementById("score").innerHTML = "Score:" + score;
+        document.getElementById("ans-result").innerHTML = "false";
+      }
+      updateNumber();
+      document.getElementById("num").style.backgroundColor = numArray[2];
+    }
+
+    function checkFalse() {
+      if (numArray[0] != numArray[2]) {
+        score++;
+        document.getElementById("score").innerHTML = "Score:" + score;
+        document.getElementById("ans-result").innerHTML = "true";
+      } else {
+        score = 0;
+        document.getElementById("score").innerHTML = "Score:" + score;
+        document.getElementById("ans-result").innerHTML = "false";
+      }
+      updateNumber();
+      document.getElementById("num").style.backgroundColor = numArray[2];
+    }
+  </script>
+</html>
