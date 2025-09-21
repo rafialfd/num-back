@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Back</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="num-display" id="num-display"><h1 id="num"></h1></div>
+      <div class="next-button" id="next-button">
+        <button onclick="next()">next</button>
+      </div>
+      <div class="guess-button" id="guess-button">
+        <button onclick="checkTrue()">true</button
+        ><button onclick="checkFalse()">false</button>
+      </div>
+      <div class="restart" id="restart">
+        <button onclick="restart()">Restart</button>
+      </div>
+      <p id="score"></p>
+      <p id="high-score"></p>
+      <p id="ans-result"></p>
+    </div>
+  </body>
+
+  <style>
+    body {
+      color: white;
+      background-color: rgb(48, 48, 48);
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #num {
+      height: 100px;
+      width: 100px;
+      border-radius: 10px;
+    }
+  </style>
+
+  <script>
+    let highScore = 0;
+    let n = 3;
+    let colorArray = ["makan", "komputer", "suka", "motor"];
+    let numArray = new Array(n + 1);
+
+    let locationNow = 1;
+    let score = 0;
+
+    for (let i = 0; i < n + 1; i++) {
+      let mathRandom = Math.floor(Math.random() * 4);
+      numArray[i] = colorArray[mathRandom];
+    }
+    document.getElementById("num-display").style.display = "block";
+    document.getElementById("num").innerHTML = numArray[n];
+    document.getElementById("score").innerHTML = "Score:" + score;
+    document.getElementById("high-score").innerHTML = "High Score:" + highScore;
+    document.getElementById("guess-button").style.display = "none";
+    document.getElementById("restart").style.display = "none";
+
+    function startGame() {
+      locationNow = 1;
+      let score = 0;
+      console.log(locationNow);
+      for (let i = 0; i < n + 1; i++) {
+        let mathRandom = Math.floor(Math.random() * 4);
+        numArray[i] = colorArray[mathRandom];
+      }
+      document.getElementById("num-display").style.display = "block";
+      document.getElementById("num").innerHTML = numArray[n];
+      document.getElementById("score").innerHTML = "Score:" + score;
+      document.getElementById("high-score").innerHTML =
+        "High Score:" + highScore;
+      document.getElementById("next-button").style.display = "block";
+      document.getElementById("guess-button").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+    }
+
+    function next() {
+      updateNumber();
+      document.getElementById("num").innerHTML = numArray[n];
+      locationNow++;
+      console.log(locationNow);
+      if (locationNow < n + 1) {
+        document.getElementById("guess-button").style.display = "none";
+      } else if (locationNow >= n + 1) {
+        document.getElementById("guess-button").style.display = "block";
+        document.getElementById("next-button").style.display = "none";
+      }
+    }
+    function wrongAns() {
+      document.getElementById("restart").style.display = "block";
+      document.getElementById("guess-button").style.display = "none";
+      document.getElementById("num-display").style.display = "none";
+    }
+
+    function restart() {
+      startGame();
+    }
+    function updateHighScore() {
+      if (score > highScore) {
+        highScore = score;
+        document.getElementById("high-score").innerHTML =
+          "High Score:" + highScore;
+      }
+    }
+    function updateNumber() {
+      for (let i = 0; i < n; i++) {
+        numArray[i] = numArray[i + 1];
+      }
+      let mathRandom = Math.floor(Math.random() * 4);
+      numArray[n] = colorArray[mathRandom];
+      console.log(numArray);
+    }
+    function checkTrue() {
+      if (numArray[0] == numArray[n]) {
+        score++;
+        updateHighScore();
+        document.getElementById("score").innerHTML = "Score:" + score;
+        document.getElementById("ans-result").innerHTML = "true";
+      } else {
+        score = 0;
+        document.getElementById("score").innerHTML = "Score:" + score;
+        document.getElementById("ans-result").innerHTML = "false";
+        wrongAns();
+      }
+      updateNumber();
+      document.getElementById("num").innerHTML = numArray[n];
+    }
+
+    function checkFalse() {
+      if (numArray[0] != numArray[n]) {
+        score++;
+        updateHighScore();
+        document.getElementById("score").innerHTML = "Score:" + score;
+        document.getElementById("ans-result").innerHTML = "true";
+      } else {
+        score = 0;
+        document.getElementById("score").innerHTML = "Score:" + score;
+        document.getElementById("ans-result").innerHTML = "false";
+        wrongAns();
+      }
+      updateNumber();
+      document.getElementById("num").innerHTML = numArray[n];
+    }
+  </script>
+</html>
